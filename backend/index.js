@@ -1,35 +1,44 @@
 import http from 'http';
 import PG from 'pg';
+import dotenv from 'dotenv';
 
-const port = Number(process.env.port);
+dotenv.config();
 
-const client = new PG.Client(
-  `postgres://${user}:${pass}@${host}:${db_port}`
-);
+const port = Number(process.env.port) || 3001;
+const db_port = Number(process.env.db_port) || 5432;
+const user = String(process.env.user);
+const pass = String(process.env.pass);
+const host = String(process.env.host);
+const database = String(process.env.database);
 
-let successfulConnection = false;
+const pool = new PG.Pool({
+  user: user,
+  password: pass,
+  host: host,
+  port: db_port,
+  database: database
+});
 
 http.createServer(async (req, res) => {
   console.log(`Request: ${req.url}`);
 
   if (req.url === "/api") {
-    client.connect()
-      .then(() => { successfulConnection = true })
-      .catch(err => console.error('Database not connected -', err.stack));
-
     res.setHeader("Content-Type", "application/json");
     res.writeHead(200);
 
     let result;
+    let dbConnected = false;
 
     try {
-      result = (await client.query("SELECT * FROM users")).rows[0];
+      result = (await pool.query("SELECT * FROM users")).rows[0];
+      dbConnected = true;
     } catch (error) {
-      console.error(error)
+      console.error('Database error:', error);
+      dbConnected = false;
     }
 
     const data = {
-      database: successfulConnection,
+      database: dbConnected,
       userAdmin: result?.role === "admin"
     }
 

@@ -1,0 +1,17 @@
+# Configurações do Projeto
+environment    = "dev"
+project_name   = ""
+
+# Configurações do Banco de Dados
+database_name     = ""
+database_user     = ""
+database_password = ""
+
+# Configurações de Portas
+backend_port = 3000
+proxy_port   = 80
+
+# Configurações de Healthcheck
+healthcheck_interval = "30s"
+healthcheck_timeout  = "10s"
+healthcheck_retries  = 3

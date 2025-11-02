@@ -39,7 +39,7 @@ resource "docker_container" "database" {
     for_each = var.init_script_path != null ? [1] : []
     content {
       host_path      = abspath(var.init_script_path)
-      container_path = "/docker-entrypoint-initdb.d/init.sql"
+      container_path = "/docker-entrypoint-initdb.d/script.sql"
       read_only      = true
     }
   }

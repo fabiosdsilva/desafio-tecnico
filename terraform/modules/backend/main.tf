@@ -22,12 +22,12 @@ resource "docker_container" "backend" {
   restart = "unless-stopped"
 
   env = [
-    "PORT=${var.port}",
-    "DB_HOST=${var.database_host}",
-    "DB_PORT=${var.database_port}",
-    "DB_USER=${var.database_user}",
-    "DB_PASSWORD=${var.database_password}",
-    "DB_NAME=${var.database_name}"
+    "port=${var.port}",
+    "host=${var.database_host}",
+    "db_port=${var.database_port}",
+    "user=${var.database_user}",
+    "pass=${var.database_password}",
+    "database=${var.database_name}"
   ]
 
   networks_advanced {
